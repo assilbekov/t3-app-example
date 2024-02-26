@@ -5,8 +5,8 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
   const { user } = useUser();
+  const { data } = api.post.getAll.useQuery();
 
   return (
     <>
@@ -24,6 +24,15 @@ export default function Home() {
             <SignOutButton />
           </>
         )}
+        <div>
+          {data?.map(post => (
+            <div key={post.id}>
+              <Link href={`/posts/${post.id}`}>
+                <h2>{post.content}</h2>
+              </Link>
+            </div>
+          ))}
+        </div>
       </main>
     </>
   );
